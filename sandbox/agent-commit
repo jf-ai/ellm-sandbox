@@ -20,10 +20,10 @@ case "$AGENT" in
     # Stateless Claude Code sessions; the model is recorded in the Co-Authored-By trailer
     ClaudeCode) AGENT="Claude Code"; EMAIL="claude-code@placeholder.dev" ;;
     # Open-weight model test instances
-    ModelTestAgent) AGENT="Model Test Agent"; EMAIL="model-test-agent@placeholder.dev" ;;
+    model_test_agent) AGENT="model_test_agent"; EMAIL="model-test-agent@placeholder.dev" ;;
     *)
         echo "Unknown agent: $AGENT" >&2
-        echo "Valid agents: Opus, Sonnet, Haiku, ClaudeCode, ModelTestAgent" >&2
+        echo "Valid agents: Opus, Sonnet, Haiku, ClaudeCode, model_test_agent" >&2
         exit 1
         ;;
 esac
