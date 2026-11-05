@@ -42,6 +42,7 @@ ENV PATH="/opt/ellm/bin:$PATH"
 # resolve identically on both host and container.
 ENV UV_PYTHON_INSTALL_DIR=${GIT_PATH}/.uv-python
 ENV UV_MANAGED_PYTHON=1
+ENV GIT_PATH=${GIT_PATH}
 
 # Install agent-commit script for clean git identity
 COPY agent-commit /opt/ellm/bin/agent-commit
