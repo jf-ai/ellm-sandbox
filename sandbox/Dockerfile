@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
     poppler-utils \
+    procps \
+    lsof \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Node 20 LTS
