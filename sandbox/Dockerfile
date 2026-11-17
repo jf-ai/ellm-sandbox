@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     poppler-utils \
     procps \
     lsof \
+    tmux \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Node 20 LTS
