@@ -25,8 +25,8 @@ Usage: $0 [--name NAME] [--port PORT] [--mount SRC:DST[:ro]]... [--no-build] [--
 
   --name NAME            container name (default: $CONTAINER_NAME). Image is always '$IMAGE_NAME'.
   --port PORT            port published on the Docker bridge IP and used by fs_proxy (default: $PORT)
-  --mount SRC:DST[:ro]   repeatable; if given at all, REPLACES the default $GIT_PATH:$GIT_PATH mount.
-                         Order is preserved (matters for nested mounts).
+  --mount SRC:DST[:ro]   repeatable; if given at all, REPLACES the default mounts ($GIT_PATH read-write,
+                         $GIT_PATH/.uv-python read-only). Order is preserved (matters for nested mounts).
   --no-build             skip the image build; use the existing '$IMAGE_NAME' image
   --fs-proxy-src DIR     directory to bake fs_proxy from (default: $FS_PROXY_SRC)
   --no-host-gateway      don't map host.docker.internal in the container
@@ -56,8 +56,12 @@ if ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 1 ] || [ "$PORT" -gt 65535 ]; th
     echo "ERROR: invalid port: $PORT" >&2; exit 2
 fi
 # Explicit mounts replace the default entirely (the sibling must not see the real $GIT_PATH)
+# The default nests .uv-python read-only over the read-write $GIT_PATH. The host runs
+# programs from that interpreter too, so a sandbox able to write it would be running code
+# on the host. Same path on both sides, so venvs keep resolving. New Pythons are installed
+# from the host.
 if [ ${#MOUNTS[@]} -eq 0 ]; then
-    MOUNTS=("$GIT_PATH:$GIT_PATH")
+    MOUNTS=("$GIT_PATH:$GIT_PATH" "$GIT_PATH/.uv-python:$GIT_PATH/.uv-python:ro")
 fi
 HOST_ARGS=()
 if [ "$HOST_GATEWAY" = 1 ]; then

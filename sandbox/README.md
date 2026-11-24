@@ -37,9 +37,11 @@ See [How2Yolo.md](How2Yolo.md) for full design details.
 
 ## Dev container and test sibling (Linux, `ellm-dev-build.sh`)
 
-`./ellm-dev-build.sh` builds the `ellm-dev` image and (re)creates the `ellm-dev` container. Flags:
+`./ellm-dev-build.sh` builds the `ellm-dev` image and (re)creates the `ellm-dev` container. By default it
+mounts `$GIT_PATH` read-write with `$GIT_PATH/.uv-python` read-only on top, because the host runs that
+interpreter too. Install new Python versions from the host (`uv python install`). Flags:
 `--name NAME` (default `ellm-dev`), `--port PORT` (bridge-published and passed to fs_proxy, default 8080),
-`--mount SRC:DST[:ro]` (repeatable; replaces the default `$GIT_PATH` mount entirely, order kept),
+`--mount SRC:DST[:ro]` (repeatable; replaces the default mounts entirely, order kept),
 `--no-build` (reuse the existing image), `--fs-proxy-src DIR` (default `$GIT_PATH/Agent-Home/src/mcp_tools`),
 `--no-host-gateway` (don't map `host.docker.internal`).
 Only the container named by `--name` is ever stopped or removed.
